@@ -9,13 +9,18 @@ try {
 
   const path = core.getInput('path');
 
-  if (!fs.existsSync(path)) {
+  if (fs.existsSync(path)) {
+    core.info(`Using provisioning profile at ${path}`)
+  } else {
     throw `Provisioning profile file not found`;
   }
 
   // Create Provisioning Profiles Directory
   const home = os.homedir();
-  const directory = path.join(home, 'Library', 'MobileDevice', 'Provisioning Profiles')
+  core.debug(`home=${home}`);
+
+  const directory = path.join(home, 'Library', 'MobileDevice', 'Provisioning Profiles');
+  core.debug(`directory=${directory}`);
 
   if (!fs.exists(directory)) {
     fs.mkdir(directory, (error) => {
