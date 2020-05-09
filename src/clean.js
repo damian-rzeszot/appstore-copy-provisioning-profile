@@ -1,10 +1,10 @@
-import * as core from '@actions/core';
-import * as fs from 'fs-extra';
-import * as path from 'path';
-import * as os from 'os';
+const core = require('@actions/core');
+const fs = require('fs-extra');
+const path = require('path');
+const os = require('os');
 
 try {
-  let home = os.homedir();
+  const home = os.homedir();
   core.debug(`home=${home}`);
 
   const directory = path.join(home, 'Library', 'MobileDevice', 'Provisioning Profiles');

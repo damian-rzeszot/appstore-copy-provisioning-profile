@@ -1,27 +1,26 @@
-import * as core from '@actions/core';
-import * as fs from 'fs-extra';
-import * as path from 'path';
-import * as os from 'os';
-
+const core = require('@actions/core');
+const fs = require('fs-extra');
+const path = require('path');
+const os = require('os');
 
 try {
   // Verify input
 
-  let source = core.getInput('path');
+  const source = core.getInput('path');
 
   if (fs.existsSync(source)) {
     core.info(`Using provisioning profile at ${source}`)
   } else {
-    throw new Error(`Provisioning profile file not found`);
+    throw `Provisioning profile file not found`;
   }
 
 
   // Create directory
 
-  let home = os.homedir();
+  const home = os.homedir();
   core.debug(`home=${home}`);
 
-  let directory = path.join(home, 'Library', 'MobileDevice', 'Provisioning Profiles');
+  const directory = path.join(home, 'Library', 'MobileDevice', 'Provisioning Profiles');
   core.debug(`directory=${directory}`);
 
   if (!fs.existsSync(directory)) {
@@ -29,8 +28,9 @@ try {
     fs.mkdirsSync(directory);
   }
 
+
   // Copy
-  let destination = path.join(directory, path.basename(source));
+  const destination = path.join(directory, path.basename(source));
   core.debug(`destination=${destination}`);
 
   core.debug(`copy '${source}', '${destination}'`);
