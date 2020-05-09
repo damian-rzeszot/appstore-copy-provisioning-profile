@@ -1,0 +1,15 @@
+name: 'AppStore - copy Provisioning Profile'
+description: 'Copy Provisioning Profile'
+inputs:
+  path:
+    description: 'Relative path under $GITHUB_WORKSPACE to take the provisioning profile'
+    default: '.github/appstore/Sample.mobileprovision '
+runs:
+  using: docker
+  image: Dockerfile
+  env:
+    provisioning_directory: $HOME/Library/MobileDevice/Provisioning Profiles
+  args:
+    - ${{ inputs.path }}
+  entrypoint: 'main.sh'
+  post-entrypoint: 'cleanup.sh'
