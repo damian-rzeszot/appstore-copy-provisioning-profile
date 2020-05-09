@@ -1,5 +1,5 @@
 {
-  "name": "appstore-copy-provisioning-profile",
+  "name": "action-copy-provisioning-profile",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
