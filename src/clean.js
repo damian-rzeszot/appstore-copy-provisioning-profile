@@ -1,9 +1,21 @@
 const core = require('@actions/core');
-const github = require('@actions/github');
+const fs = require('fs-extra');
+const path = require('path');
+const os = require('os');
 
 try {
-  const time = (new Date()).toTimeString();
-  core.setOutput("test", time);
+  const home = os.homedir();
+  core.debug(`home=${home}`);
+
+  const directory = path.join(home, 'Library', 'MobileDevice', 'Provisioning Profiles');
+  core.debug(`directory=${directory}`);
+
+
+  // Delete directory
+
+  fs.removeSync(directory);
+  core.debug(`remove '${directory}'`);
+
 } catch (error) {
   core.setFailed(error.message);
 }
