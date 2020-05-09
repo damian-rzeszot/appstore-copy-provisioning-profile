@@ -9050,13 +9050,30 @@ module.exports = (promise, onFinally) => {
 
 const core = __webpack_require__(310);
 const github = __webpack_require__(462);
+const fs = __webpack_require__(747);
+const path = __webpack_require__(622);
+const os = __webpack_require__(87);
 
 try {
-  const nameToGreet = core.getInput('path');
-  console.log(`Hello ${nameToGreet}!`);
+  // Verify Input
 
-  const time = (new Date()).toTimeString();
-  core.setOutput("time", time);
+  const path = core.getInput('path');
+
+  if (!fs.existsSync(path)) {
+    throw `Provisioning profile file not found`;
+  }
+
+  // Create Provisioning Profiles Directory
+  const home = os.homedir();
+  const directory = path.join(home, 'Library', 'MobileDevice', 'Provisioning Profiles')
+
+  if (!fs.exists(directory)) {
+    fs.mkdir(directory, (error) => {
+      if (err) {
+        throw err;
+      }
+    });
+  }
 
 } catch (error) {
   core.setFailed(error.message);
