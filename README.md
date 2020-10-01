@@ -1,1 +1,1 @@
-# appstore-copy-provisioning-profile
+# GitHub Actions: App Store - copy Provisioning Profile

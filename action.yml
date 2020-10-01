@@ -1,10 +1,23 @@
-name: 'AppStore - copy Provisioning Profile'
+name: 'App Store - copy Provisioning Profile'
 description: 'Copy Provisioning Profile'
 inputs:
   path:
     description: 'Relative path under $GITHUB_WORKSPACE to take the provisioning profile'
-    default: '.github/appstore/Sample.mobileprovision'
+    default: '.github/appstore/profile.mobileprovision'
+outputs:
+  provisioning_profile_uuid:
+    description: 'UUID of Provisioning Provile'
+    value: ${{ steps.action.outputs.provisioning_profile_uuid }}
 runs:
-  using: 'node12'
-  main: 'dist/main.js'
-  post: 'dist/clean.js'
+  using: 'composite'
+  steps:
+    - shell: sh
+      id: action
+      run: |
+        uuid=`grep UUID -A1 -a "${{ inputs.path }}" | grep -io "[-A-F0-9]\{36\}"`
+        profiles="$HOME/Library/MobileDevice/Provisioning Profiles"
+
+        echo "::set-output name=provisioning_profile_uuid::$uuid"
+
+        mkdir -p "$profiles"
+        cp "${{ inputs.path }}" "$profiles/$uuid.mobileprovision"
