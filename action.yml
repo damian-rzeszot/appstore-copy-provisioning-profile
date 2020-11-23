@@ -14,11 +14,12 @@ runs:
     - shell: sh
       id: action
       run: |
+        profiles="$HOME/Library/MobileDevice/Provisioning Profiles"
         uuid=`grep UUID -A1 -a "${{ inputs.path }}" | grep -io "[-A-F0-9]\{36\}"`
 
         echo "Copying provisioning profile with uuid: $uuid"
 
         mkdir -p "$profiles"
-        cp "${{ inputs.path }}" "$HOME/Library/MobileDevice/Provisioning Profiles/$uuid.mobileprovision"
+        cp "${{ inputs.path }}" "$profiles/$uuid.mobileprovision"
 
         echo "::set-output name=uuid::$uuid"
