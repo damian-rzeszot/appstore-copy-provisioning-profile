@@ -5,7 +5,7 @@ inputs:
     description: 'Relative path under $GITHUB_WORKSPACE to take the provisioning profile'
     default: '.github/appstore/profile.mobileprovision'
 outputs:
-  provisioning_profile_uuid:
+  uuid:
     description: 'UUID of Provisioning Provile'
     value: ${{ steps.action.outputs.provisioning_profile_uuid }}
 runs:
@@ -15,9 +15,10 @@ runs:
       id: action
       run: |
         uuid=`grep UUID -A1 -a "${{ inputs.path }}" | grep -io "[-A-F0-9]\{36\}"`
-        profiles="$HOME/Library/MobileDevice/Provisioning Profiles"
 
-        echo "::set-output name=provisioning_profile_uuid::$uuid"
+        echo "Copying provisioning profile with uuid: $uuid"
 
         mkdir -p "$profiles"
-        cp "${{ inputs.path }}" "$profiles/$uuid.mobileprovision"
+        cp "${{ inputs.path }}" "$HOME/Library/MobileDevice/Provisioning Profiles/$uuid.mobileprovision"
+
+        echo "::set-output name=uuid::$uuid"
